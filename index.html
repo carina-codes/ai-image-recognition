@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Image Recognition</title>
+  <style>
+    * {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-smooth: always;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      cursor: default;
+    }
+
+    body {
+      min-height: 100vh;
+      align-content: center;
+    }
+
+    .demo {
+      width: 800px;
+      max-width: 100%;
+      margin: auto;
+      padding: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 25px 0;
+    }
+
+    button {
+      padding: 10px 15px;
+      border-radius: 10px;
+      border: 1px solid;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      cursor: pointer;
+      background-color: black;
+      border: 1px solid black;
+      color: white;
+    }
+
+    #input {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+
+    #input > div {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    #input > div.actions {
+      flex: .3;
+    }
+
+    #userInput {
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid;
+      height: 346px;
+    }
+
+    #userInput:hover {
+      cursor: pointer;
+    }
+
+    #output {
+      height: 150px;
+      width: 100%;
+      border: 1px solid;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      padding: 15px;
+      overflow-y: scroll;
+      scrollbar-width: auto;
+      scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+      background: whitesmoke;
+      border-color: inherit;
+    }
+
+    #output::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #output::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #output::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+    }
+
+    .view-image {
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid;
+      min-height: 346px;
+      background-image: url("image-placeholder.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      border: 0;
+    }
+
+    .cred {
+      text-align: center;
+      margin: 20px;
+    }
+
+    /* Mobile */
+    @media (max-width: 799px) {
+      #input {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <h1>AI Image Recognition</h1>
+
+    <div id="input">
+      <div class="view-image">
+        <!-- The uploaded image or snapped image goes here -->
+      </div>
+      <div class="actions">
+        <button onclick="uploadInput()">Upload Image</button>
+        <button onclick="photoInput()">Take a Photo</button>
+        <button onclick="processInput()">Submit</button>
+        <button onclick="resetInput()">Reset</button>
+      </div>
+    </div>
+
+    <div id="output"></div>
+
+    <div class="cred">
+      <span>Built by <a href="https://github.com/carina-codes/ai-image-recognition" target="_blank">Carina Codes</a></span>
+    </div>
+  </div>
+
+  <script>
+    let selectedImage = null;
+
+    function uploadInput() {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+      input.onchange = () => {
+        const file = input.files[0];
+        if (file) {
+          selectedImage = file;
+          displayImage(URL.createObjectURL(file));
+        }
+      };
+      input.click();
+    }
+
+    function photoInput() {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+      input.capture = "environment";
+      input.onchange = () => {
+        const file = input.files[0];
+        if (file) {
+          selectedImage = file;
+          displayImage(URL.createObjectURL(file));
+        }
+      };
+      input.click();
+    }
+
+    function displayImage(imageUrl) {
+      const view = document.querySelector(".view-image");
+      view.style.backgroundImage = `url(${imageUrl})`;
+    }
+
+    async function processInput() {
+      if (!selectedImage) {
+        alert("Please upload or take a photo first.");
+        return;
+      }
+
+      const output = document.getElementById("output");
+      output.textContent = "Analyzing image...";
+
+      const formData = new FormData();
+      formData.append("file", selectedImage);
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+        output.textContent = data.text || "No response received.";
+      } catch (err) {
+        output.textContent = "Error: " + err.message;
+      }
+    }
+
+    function resetInput() {
+      selectedImage = null;
+      document.querySelector(".view-image").style.backgroundImage = 'url("image-placeholder.jpg")';
+      document.getElementById("output").textContent = "";
+    }
+  </script>
+
+
+</body>
+</html>
