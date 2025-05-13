@@ -1,4 +1,4 @@
-import formidable from "formidable";
+import { formidable } from "formidable";
 import fs from "fs";
 import { promisify } from "util";
 
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const form = new formidable.IncomingForm();
+  const form = formidable(); // ✅ Fix here
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
@@ -28,9 +28,9 @@ export default async function handler(req, res) {
     }
 
     try {
-      const imageBuffer = await readFile(file.filepath);
+      const imageBuffer = await readFile(file[0].filepath); // ✅ notice file[0]
       const base64Image = imageBuffer.toString("base64");
-      const mimeType = file.mimetype;
+      const mimeType = file[0].mimetype;
 
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
