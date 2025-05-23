@@ -48,16 +48,6 @@ body {
   background-blend-mode: screen;
   background-size: 175% 175%;
   background-position: 50% 50%;
-  animation: shiftColors 6s ease-in-out infinite alternate;
-}
-
-@keyframes shiftColors {
-  0% {
-    background-position: 50% 50%;
-  }
-  100% {
-    background-position: 100% 100%;
-  }
 }
 
 a:hover, 
@@ -106,25 +96,15 @@ header {
   text-align: center;
 }
 
+header p {
+  font-size: 15px;
+}
+
 .demo {
   width: 800px;
   max-width: 100%;
   margin: auto;
   padding: 10px;
-}
-
-button {
-  padding: 10px 15px;
-  border-radius: 10px;
-  border: 1px solid;
-  transition: all 0.2s;
-}
-
-button:hover {
-  cursor: pointer;
-  background-color: black;
-  border: 1px solid black;
-  color: white;
 }
 
 #input {
@@ -221,12 +201,14 @@ button:hover {
   border-radius: 25px;
   padding: 8px 25px;
   transition: all 0.25s;
+  color: var(--black);
 }
 
 .btn:hover, button:hover {
   border: 1px solid var(--primary);
   background-color: var(--primary);
   color: var(--white);
+  cursor: pointer;
 }
 
 .btn-black {
