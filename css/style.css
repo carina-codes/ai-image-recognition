@@ -39,15 +39,7 @@ body {
 }
 
 body {
-  background: 
-    radial-gradient(circle at 30% 30%, #878bff 0%, transparent 45%),
-    radial-gradient(circle at 70% 30%, #ff00cc 0%, transparent 45%),
-    radial-gradient(circle at 50% 60%, #00ff99 0%, transparent 45%),
-    radial-gradient(circle at 80% 40%, #ff3300 0%, transparent 45%),
-    radial-gradient(circle at 40% 40%, #00b6c2, #657bdc);
-  background-blend-mode: screen;
-  background-size: 175% 175%;
-  background-position: 50% 50%;
+  background: var(--background);
 }
 
 a:hover, 
@@ -146,7 +138,7 @@ header p {
   scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
   background-color: var(--white);
   border-color: inherit;
-  border: 1px solid;
+  border: 1px solid var(--outline);
   font-family: var(--paragraph);
 }
 
@@ -171,7 +163,7 @@ header p {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: rgba(255, 255, 255, .25);
+  background-color: var(--white);
 }
 
 .visually-hidden {
@@ -197,17 +189,17 @@ header p {
 
 .btn, button {
   display: inline-block;
-  border: 1px solid var(--outline);
-  background-color: var(--white);
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
   border-radius: 25px;
   padding: 8px 25px;
   transition: all 0.25s;
-  color: var(--black);
+  color: var(--white);
 }
 
 .btn:hover, button:hover {
-  border: 1px solid var(--primary);
-  background-color: var(--primary);
+  border: 1px solid var(--black);
+  background-color: var(--black);
   color: var(--white);
   cursor: pointer;
 }

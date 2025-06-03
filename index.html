@@ -76,13 +76,16 @@
     }
 
     async function processInput() {
-      if (!selectedImage) {
-        alert("Please upload or take a photo first.");
-        return;
-      }
+  if (!selectedImage) {
+    alert("Please upload or take a photo first.");
+    return;
+  }
 
-      const output = document.getElementById("output");
+    const output = document.getElementById("output");
       output.textContent = "Analyzing image...";
+
+      // Scroll to output
+      output.scrollIntoView({ behavior: "smooth" });
 
       const formData = new FormData();
       formData.append("file", selectedImage);
